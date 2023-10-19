@@ -1,0 +1,39 @@
+create table customer(
+cust# int,
+cname varchar(15),
+city varchar(15),
+primary key(cust#)
+);
+create table orders(
+order# int,
+odate date,
+cust# int,
+ordamt int,
+primary key(order#),
+constraint key13 foreign key(cust#) references customer on delete cascade
+);
+create table item(
+item# int,
+unitprice int,
+primary key(item#)
+);
+create table order_items(
+order# int ,
+item# int,
+qty int,
+primary key(order#),
+constraint key12 foreign key(item#) references item on delete cascade
+);
+create table warehouse(
+warehouse# int,
+city varchar(15),
+primary key(warehouse#)
+);
+create table shipment(
+order# int,
+warehouse# int,
+shipdate date,
+primary key(order#), 
+constraint key10 foreign key(order#) references order_items on delete cascade,
+constraint key11 foreign key(warehouse#) references warehouse on delete cascade
+);

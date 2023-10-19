@@ -1,0 +1,224 @@
+create table PERSON(driver_id varchar(30),name varchar(50),address varchar(100),primary key(driver_id));
+
+Table created.
+ 
+create table CAR(regno varchar(20),model varchar(30),year numeric,primary key(regno));
+
+Table created.
+
+create table ACCIDENT(report_number numeric,accd_date date,location varchar(50),primary key(report_number));
+
+Table created.
+
+create table OWNS(driver_id varchar(30),regno varchar(20),foreign key(driver_id) references PERSON,foreign key(regno) references CAR);
+
+Table created.
+
+create table PARTICIPATED(driver_id varchar(30),regno varchar(20),report_number numeric,damage_amount numeric,
+constraint key2 foreign key(driver_id) references PERSON on delete cascade,primary key(driver_id,regno,report_number),
+constraint key1 foreign key(regno) references CAR on delete cascade,
+constraint key3 foreign key(report_number) references ACCIDENT on delete cascade) ;
+
+Table created.
+//Entering values in person
+insert into PERSON values(1,'LAKSHMAN','LANKA');
+
+1 row created.
+
+SQL> insert into PERSON values(2,'ABHI','MANIPAL');
+
+1 row created.
+
+SQL> insert into PERSON values(3,'ROHIT','MUMBAI');
+
+1 row created.
+
+SQL> insert into PERSON values(4,'VIRAT','DELHI');
+
+1 row created.
+
+SQL> insert into PERSON values(5,'BUMRAH','BARODA');
+
+1 row created.
+//altering table
+alter table person modify driver_id varchar(10);
+
+Table altered.
+
+SQL> alter table person modify name varchar(15);
+
+Table altered.
+
+SQL> alter table person modify address varchar(15);
+
+Table altered.
+
+DRIVER_ID  NAME            ADDRESS
+---------- --------------- ---------------
+1          LAKSHMAN        LANKA
+2          ABHI            MANIPAL
+3          ROHIT           MUMBAI
+4          VIRAT           DELHI
+5          BUMRAH          BARODA
+
+//inserting in car
+SQL> insert into CAR values('1789','ZXI',2022);
+
+1 row created.
+
+SQL> insert into CAR values('1790','ZXL',2023);
+
+1 row created.
+
+SQL> insert into CAR values('1800','NOICE',2020);
+
+1 row created.
+
+SQL> insert into CAR values('1900','COOL',2019);
+
+1 row created.
+
+SQL> insert into CAR values('1985','WHITE',2018);
+
+1 row created.
+
+REGNO                MODEL                                YEAR
+-------------------- ------------------------------ ----------
+1789                 ZXI                                  2022
+1790                 ZXL                                  2023
+1800                 NOICE                                2020
+1900                 COOL                                 2019
+1985                 WHITE                                2018
+
+
+//insert accident
+SQL> insert into ACCIDENT values(1,to_date('12-02-23','dd-mm-yy'),'JK');
+
+1 row created.
+
+SQL> insert into ACCIDENT values(2,to_date('13-02-22','dd-mm-yy'),'AP');
+
+1 row created.
+
+
+SQL> insert into ACCIDENT values(3,to_date('21-10-21','dd-mm-yy'),'TS');
+
+1 row created.
+
+SQL> insert into ACCIDENT values(4,to_date('20-10-20','dd-mm-yy'),'TN');
+
+1 row created.
+
+
+SQL> insert into ACCIDENT values(5,to_date('19-01-97','dd-mm-yy'),'GA');
+
+1 row created.
+REPORT_NUMBER ACCD_DATE LOCATION
+------------- --------- --------------------------------------------------
+            1 12-FEB-23 JK
+            2 13-FEB-22 AP
+            3 21-OCT-21 TS
+            4 20-OCT-20 TN
+            5 19-JAN-97 GA
+
+//insert owns
+SQL> insert into OWNS values(1,1789);
+
+1 row created.
+SQL> insert into OWNS values(2,1790);
+
+1 row created.
+
+SQL> insert into OWNS values(3,1800);
+
+1 row created.
+
+SQL> insert into OWNS values(4,1900);
+
+1 row created.
+
+SQL> insert into OWNS values(5,1985);
+
+1 row created.
+DRIVER_ID                      REGNO
+------------------------------ --------------------
+1                              1789
+2                              1790
+3                              1800
+4                              1900
+5                              1985
+
+//insert participated
+
+SQL> insert into PARTICIPATED values(1,1789,1,2000);
+
+1 row created.
+
+SQL> insert into PARTICIPATED values(2,1790,2,3500);
+
+1 row created.
+
+SQL> insert into PARTICIPATED values(3,1800,3,3000);
+
+1 row created.
+
+SQL> insert into PARTICIPATED values(4,1900,4,4000);
+
+1 row created.
+
+SQL> insert into PARTICIPATED values(5,1985,5,5000);
+
+1 row created.
+
+DRIVER_ID                      REGNO                REPORT_NUMBER DAMAGE_AMOUNT
+------------------------------ -------------------- ------------- -------------
+1                              1789                             1          2000
+2                              1790                             2          3500
+3                              1800                             3          3000
+4                              1900                             4          4000
+5                              1985                             5          5000
+
+
+3)
+SQL> update PARTICIPATED set damage_amount=25000 where regno=1789;
+
+1 row updated.
+DRIVER_ID                      REGNO                REPORT_NUMBER DAMAGE_AMOUNT
+------------------------------ -------------------- ------------- -------------
+1                              1789                             1         25000
+2                              1790                             2          3500
+3                              1800                             3          3000
+4                              1900                             4          4000
+5                              1985                             5          5000
+
+4)
+delete 
+from accident 
+where extract(year from accd_date)=2021; 
+
+REPORT_NUMBER ACCD_DATE LOCATION
+------------- --------- --------------------------------------------------
+            1 12-FEB-23 JK
+            2 13-FEB-22 AP
+            4 20-OCT-20 TN
+            5 19-JAN-97 GA
+
+
+
+5)
+alter table person
+add new_column varchar(15);
+
+alter table person
+drop column new_column;
+
+6)
+alter table car
+add dob int constraint chk check(dob>2020);
+
+alter table car
+drop constraint chk;
+
+
+
+insert into PARTICIPATED values(7,1939,8,5000);

@@ -1,0 +1,124 @@
+insert into PERSON values(6,'PANDYA','BARODA');
+insert into PERSON values(7,'SHUBHMAN','KOLKATA');
+insert into CAR values('2020','ZXL',2008);
+insert into CAR values('1939','BAZZ',2008);
+insert into ACCIDENT values(6,to_date('19-01-08','dd-mm-yy'),'MH');
+insert into ACCIDENT values(7,to_date('31-10-08','dd-mm-yy'),'GJ');
+insert into OWNS values(6,2020);
+insert into OWNS values(7,1939);
+insert into PARTICIPATED values(6,2020,6,5500);
+insert into PARTICIPATED values(7,1939,7,5000);
+insert into ACCIDENT values(8,to_date('20-10-08','dd-mm-yy'),'TS');
+
+insert into PARTICIPATED values(8,1939,8,5000);
+#PERSON:
+DRIVER_ID  NAME            ADDRESS
+---------- --------------- ---------------
+1          LAKSHMAN        LANKA
+2          ABHI            MANIPAL
+3          ROHIT           MUMBAI
+4          VIRAT           DELHI
+5          BUMRAH          BARODA
+6          PANDYA          BARODA
+7          SHUBHMAN        KOLKATA
+
+#CAR:
+
+REGNO                MODEL                                YEAR
+-------------------- ------------------------------ ----------
+1789                 ZXI                                  2022
+1790                 ZXL                                  2023
+1800                 NOICE                                2020
+1900                 COOL                                 2019
+1985                 WHITE                                2018
+2020                 ZXL                                  2008
+1939                 BAZZ                                 2008
+
+#ACCIDENT:
+
+REPORT_NUMBER ACCD_DATE LOCATION
+------------- --------- --------------------------------------------------
+            1 12-FEB-23 JK
+            2 13-FEB-22 AP
+            3 21-OCT-21 TS
+            5 19-JAN-97 GA
+            6 19-JAN-08 MH
+            7 31-OCT-08 GJ
+            8 20-OCT-08 TS
+#OWNS:
+
+DRIVER_ID                      REGNO
+------------------------------ --------------------
+1                              1789
+2                              1790
+3                              1800
+4                              1900
+5                              1985
+6                              2020
+7                              1939
+#PARTICIPATED:
+DRIVER_ID                      REGNO                REPORT_NUMBER DAMAGE_AMOUNT
+------------------------------ -------------------- ------------- -------------
+1                              1789                             1         25000
+2                              1790                             2          3500
+3                              1800                             3          3000
+5                              1985                             5          5000
+6                              2020                             6          5500
+7                              1939                             7          5000
+7                              1939                             8          5000
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+lab-4\\
+1)
+SQL> SELECT COUNT(DISTINCT DRIVER_ID)
+    FROM ACCIDENT NATURAL JOIN PARTICIPATED NATURAL JOIN OWNS
+    WHERE EXTRACT (YEAR FROM ACCD_DATE)='2008' ;
+
+COUNT(REPORT_NUMBER)
+--------------------
+                   2
+
+
+
+2)
+SELECT COUNT(REPORT_NUMBER)
+FROM CAR NATURAL JOIN PARTICIPATED
+WHERE MODEL='ZXL' ;
+COUNT(REPORT_NUMBER)
+--------------------
+                   2
+
+3)
+SELECT NAME AS OWNER_NAME,COUNT(DAMAGE_AMOUNT) AS NO_OF_ACCIDENTS,SUM(DAMAGE_AMOUNT) AS TOTAL_DAMAGE_AMOUNT
+FROM PARTICIPATED NATURAL JOIN PERSON
+GROUP BY NAME
+ORDER BY SUM(DAMAGE_AMOUNT) DESC;
+
+SQL> SELECT NAME,COUNT(DAMAGE_AMOUNT),SUM(DAMAGE_AMOUNT)
+  2  FROM PARTICIPATED NATURAL JOIN PERSON
+  3  GROUP BY NAME
+  4  ORDER BY SUM(DAMAGE_AMOUNT) DESC;
+
+NAME            COUNT(DAMAGE_AMOUNT) SUM(DAMAGE_AMOUNT)
+--------------- -------------------- ------------------
+LAKSHMAN                           1              25000
+SHUBHMAN                           2              10000
+PANDYA                             1               5500
+BUMRAH                             1               5000
+ABHI                               1               3500
+ROHIT                              1               3000
+4)
+SELECT NAME AS OWNER_NAME,EXTRACT (YEAR FROM ACCD_DATE) AS YEAR1
+FROM PARTICIPATED NATURAL JOIN PERSON NATURAL JOIN ACCIDENT
+GROUP BY NAME,EXTRACT (YEAR FROM ACCD_DATE)
+HAVING COUNT(DAMAGE_AMOUNT)>1	 ;
+OWNER_NAME           YEAR1
+--------------- ----------
+SHUBHMAN              2008
+5)
+select name from person minus select name from person natural join participated;
+NAME
+---------------
+VIRAT

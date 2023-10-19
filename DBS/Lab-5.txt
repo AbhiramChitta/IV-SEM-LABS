@@ -1,0 +1,139 @@
+create table student(
+regno varchar(20),
+name varchar(50),
+major varchar(20),
+bdate date,
+primary key(regno)
+);
+
+create table course(
+course# int,
+cname varchar(30),
+dept varchar(30),
+primary key(course#)
+);
+
+create table enroll(
+regno varchar(20),
+course# int,
+primary key(regno,course#),
+constraint key5 foreign key(regno) references student on delete cascade,
+constraint key6 foreign key(course#) references course on delete cascade 
+);
+
+create table book_adoption(
+course# int,
+sem int,
+book_isbn int,
+primary key(course#,book_isbn),
+constraint key7 foreign key(course#) references course on delete cascade,
+constraint key4 foreign key(book_isbn) references text on delete cascade
+);
+
+create table text(
+book_isbn int,
+booktitle varchar(50),
+publisher varchar(50),
+author varchar(50),
+primary key(book_isbn)
+);
+
+***
+SQL> alter table book_adoption drop primary key;
+
+Table altered.
+
+SQL> alter table book_adoption add primary key(book_isbn);
+
+Table altered.***
+
+
+2)
+insert into student values('210953076','Abhiram','CSE',to_date('21-10-2003','dd-mm-yy'));
+insert into student values('210953058','Kurmilla','CIVIL',to_date('24-02-2004','dd-mm-yy'));
+insert into student values('210953150','Subrahmanya','B.ARCH',to_date('10-07-2003','dd-mm-yy'));
+insert into student values('210953090','Nitish','B.ARCH',to_date('03-09-2003','dd-mm-yy'));
+insert into student values('210953154','Sahith','CSE',to_date('21-06-2003','dd-mm-yy'));
+//alter table tablename modify column
+SQL> select * from student;
+
+REGNO           NAME            MAJOR           BDATE
+--------------- --------------- --------------- ---------
+210953076       Abhiram         CSE             21-OCT-03
+210953058       Kurmilla        CIVIL           24-FEB-04
+210953150       Subrahmanya     B.ARCH          10-JUL-03
+210953090       Nitish          B.ARCH          03-SEP-03
+210953154       Sahith          CSE             21-JUN-03
+
+
+insert into course values(1,'DBS','ICT');
+insert into course values(2,'SOM','MECH');
+insert into course values(3,'AW','HUM');
+insert into course values(4,'DS','ICT');
+insert into course values(5,'MS','CHEM');
+
+
+SQL> select * from course;
+
+   COURSE# CNAME                          DEPT
+---------- ------------------------------ ------------------------------
+         1 DBS                            ICT
+         2 SOM                            MECH
+         3 AW                             HUM
+         4 DS                             ICT
+         5 MS                             CHEM
+
+
+insert into enroll values('210953076',1);
+insert into enroll values('210953058',4);
+insert into enroll values('210953150',2);
+insert into enroll values('210953154',3);
+insert into enroll values('210953090',5);
+SQL> select * from enroll;
+
+REGNO                   COURSE#
+-------------------- ----------
+210953058                     4
+210953076                     1
+210953090                     5
+210953150                     2
+210953154                     3
+
+insert into book_adoption values(1,4,1985);
+insert into book_adoption values(2,5,1980);
+insert into book_adoption values(3,4,1984);
+insert into book_adoption values(4,3,1990);
+insert into book_adoption values(5,6,1995);
+
+SQL> select * from book_adoption;
+
+   COURSE#        SEM  BOOK_ISBN
+---------- ---------- ----------
+         1          4       1985
+         2          5       1980
+         3          4       1984
+         4          3       1990
+         5          6       1995
+
+insert into text values(1985,'database','RK','Suyol');
+insert into text values(1980,'materials','SY','RK Narayan');
+insert into text values(1984,'Writing eng','PB','Achilles');
+insert into text values(1990,'Ds in cpp','CL','Akhil');
+insert into text values(1995,'Material Sci','AS','Newton');
+
+SQL> select * from text;
+
+ BOOK_ISBN BOOKTITLE       PUBLISHER       AUTHOR
+---------- --------------- --------------- ---------------
+      1985 database        RK              Suyol
+      1980 materials       SY              RK Narayan
+      1984 Writing eng     PB              Achilles
+      1990 Ds in cpp       CL              Akhil
+      1995 Material Sci    AS              Newton
+
+
+
+3)
+a.
+insert into book_adoption values(1,4,1895);
+insert into text values('1895',datastorage','BM','Allen');
